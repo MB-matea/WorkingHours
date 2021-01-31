@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Working Hours</string>
+    <string name="add_employee">Dodaj Zaposlenika</string>
+    <string name="employees">Zaposlenici</string>
+    <string-array name="employees">
+        <item>Mate Matić</item>
+        <item>Iva Ivić</item>
+        <item>Karlo Karlić</item>
+    </string-array>
+    <string name="addTime_tab">Radno Vrijeme</string>
+    <string name="getTime_tab">Pregled</string>
 </resources>

@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".NewEmployeeActivity"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_main"
         android:id="@+id/toolbar"/>
 
-    <ListView
-        android:id="@+id/employees_list"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:entries="@array/employees"/>
+        android:text="Dodaj zaposlenika čćžđš"
+        android:padding="3pt"/>
 
 </LinearLayout>
