@@ -2,6 +2,7 @@ package com.mateabeslic.workinghours;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,12 +11,19 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.mateabeslic.workinghours.Database.EmployeeDatabase;
+
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +31,8 @@ import java.util.Calendar;
  * create an instance of this fragment.
  */
 public class AddTimeFragment extends Fragment implements View.OnClickListener {
+
+    private EmployeeDatabase employeeDatabase;
 
     public AddTimeFragment() {
         // Required empty public constructor
@@ -36,10 +46,16 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
         EditText date = layout.findViewById(R.id.date);
         EditText timeStart = layout.findViewById(R.id.time_start);
         EditText timeEnd = layout.findViewById(R.id.time_end);
+        Button btnSave = layout.findViewById(R.id.btn_save);
 
         date.setInputType(InputType.TYPE_NULL);
         timeStart.setInputType(InputType.TYPE_NULL);
         timeEnd.setInputType(InputType.TYPE_NULL);
+
+        //UNPACK OUR DATA FROM OUR BUNDLE
+        int employeeId = this.getArguments().getInt("id");
+
+        employeeDatabase = EmployeeDatabase.getInstance(getActivity());
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +76,16 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 showTimeDialog(timeEnd);
+            }
+        });
+        
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String employeeDate = date.getText().toString();
+                String employeeTimeStart = timeStart.getText().toString();
+                String employeeTimeEnd = timeEnd.getText().toString();
+                new InsertDetailAsyncClass(employeeId).execute(employeeDate, employeeTimeStart, employeeTimeEnd);
             }
         });
 
@@ -118,5 +144,80 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
         };
         new TimePickerDialog( getActivity(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE), true).show();
+    }
+
+    public class InsertDetailAsyncClass extends AsyncTask<String, Void, Void> {
+
+        int employeeId;
+
+        public InsertDetailAsyncClass(int employeeId) {
+            this.employeeId = employeeId;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String date = strings[0];
+            String timeStart = strings[1];
+            String timeEnd = strings[2];
+            employeeDatabase = EmployeeDatabase.getInstance(getActivity());
+
+
+            // parse date
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            try {
+                calendar.setTime(sdf.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // parse timeStart
+            Calendar calendar1 = Calendar.getInstance();
+            SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
+            try {
+                calendar1.setTime(sdf1.parse(timeStart));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // parse timeEnd
+            Calendar calendar2 = Calendar.getInstance();
+            SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+            try {
+                calendar2.setTime(sdf2.parse(timeEnd));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Date dbDate = calendar.getTime();
+
+            Date dbTimeStart = calendar1.getTime();
+
+            Date dbTimeEnd = calendar2.getTime();
+//
+//            employeeDatabase = EmployeeDatabase.getInstance(getActivity());
+
+            Detail detail = new Detail();
+
+            // set fk
+            detail.setId_fkEmployee(employeeId);
+
+//            // set date
+            detail.setDate(dbDate);
+//
+            // set timeStart
+            detail.setTimeStart(dbTimeStart);
+
+            // set timeEnd
+            detail.setTimeEnd(dbTimeEnd);
+
+            employeeDatabase.employeeDao().insertDetail(detail);
+
+            System.out.println(" Date: " + detail.getDate());
+            System.out.println(" Time start: " + detail.getTimeStart());
+            System.out.println(" Time end: " + detail.getTimeEnd());
+
+            return null;
+        }
     }
 }
