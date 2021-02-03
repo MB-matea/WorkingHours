@@ -98,8 +98,23 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "Niste unijeli vrijeme odlaska!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    new InsertDetailAsyncClass(employeeId).execute(employeeDate, employeeTimeStart, employeeTimeEnd);
-                    Toast.makeText(getContext(), "Usješno ste unijeli podatke!", Toast.LENGTH_SHORT).show();
+                    String[] timef1 = employeeTimeStart.split(":");
+                    String[] timef2 = employeeTimeEnd.split(":");
+                    int hourStart = Integer.parseInt(timef1[0]);
+                    int minuteStart = Integer.parseInt(timef1[1]);
+
+                    int hourEnd = Integer.parseInt(timef2[0]);
+                    int minuteEnd = Integer.parseInt(timef2[1]);
+
+                    int timeStart = (60 * minuteStart) + (3600 * hourStart);
+                    int timeEnd = (60 * minuteEnd) + (3600 * hourEnd);
+
+                    if (timeStart > timeEnd) {
+                        Toast.makeText(getContext(), "Greška pri unosu: Vrijeme dolaska je kasnije od vremena odlaska!", Toast.LENGTH_LONG).show();
+                    } else {
+                        new InsertDetailAsyncClass(employeeId).execute(employeeDate, employeeTimeStart, employeeTimeEnd);
+                        Toast.makeText(getContext(), "Usješno ste unijeli podatke!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

@@ -43,8 +43,15 @@ public class NewEmployeeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = edtName.getText().toString();
-                new InsertEmployeeAsyncTask().execute(name);
-                finish();
+
+                if(name.isEmpty()) {
+                    Toast.makeText(NewEmployeeActivity.this, "Niste unijeli ime zaposlenika!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    new InsertEmployeeAsyncTask().execute(name);
+                    Toast.makeText(NewEmployeeActivity.this, "Uspješno ste unijeli zaposlenika", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
     }
