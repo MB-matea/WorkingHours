@@ -13,7 +13,7 @@
         style="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <include layout="@layout/toolbar_main"
-        android:id="@+id/toolbar"/>
+            android:id="@+id/toolbar"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -26,6 +26,5 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
 
 </LinearLayout>

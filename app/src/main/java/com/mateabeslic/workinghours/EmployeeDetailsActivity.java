@@ -33,8 +33,6 @@ public class EmployeeDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_EMPLOYEEID = "employeeID";
     public static String idString;
 
-//    EditText date, timeStart, timeEnd;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,6 @@ public class EmployeeDetailsActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(vp);
    }
-
 
 
     private class HomePagerAdapter extends FragmentPagerAdapter {
@@ -102,6 +99,7 @@ public class EmployeeDetailsActivity extends AppCompatActivity {
         }
     }
 
+
     private AddTimeFragment sendDataAddTimeFragment() {
         Bundle bundle = new Bundle();
         bundle.putInt("id", Integer.valueOf(idString));
@@ -111,6 +109,7 @@ public class EmployeeDetailsActivity extends AppCompatActivity {
         return fragment;
     }
 
+
     private GetTimeFragment sendDataGetTimeFragment() {
         Bundle bundle = new Bundle();
         bundle.putInt("id", Integer.valueOf(idString));
@@ -119,5 +118,4 @@ public class EmployeeDetailsActivity extends AppCompatActivity {
 
         return fragment;
     }
-
 }

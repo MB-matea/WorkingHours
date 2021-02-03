@@ -32,7 +32,6 @@ public class NewEmployeeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         // botun za natrag
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -43,14 +42,11 @@ public class NewEmployeeActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                new InsertEmployeeAsyncTask(edtName.getText().toString());
                 String name = edtName.getText().toString();
                 new InsertEmployeeAsyncTask().execute(name);
                 finish();
-//                saveNewUser(name);
             }
         });
-
     }
 
 
@@ -65,8 +61,8 @@ public class NewEmployeeActivity extends AppCompatActivity {
             employee.setName(name);
 
             employeeDatabase.employeeDao().insertEmployee(employee);
+
             return null;
         }
     }
-
 }

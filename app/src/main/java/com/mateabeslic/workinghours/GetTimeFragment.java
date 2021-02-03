@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +27,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link GetTimeFragment# newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class GetTimeFragment extends Fragment {
 
     private EmployeeDatabase employeeDatabase;
+    private TextView txtHours;
+    private String allHoursString;
+    private View layout;
 
     public GetTimeFragment() {
         // Required empty public constructor
@@ -39,21 +41,26 @@ public class GetTimeFragment extends Fragment {
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null) {
+            allHoursString = savedInstanceState.getString("extra");
+        }
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View layout = inflater.inflate(R.layout.fragment_get_time, container, false);
+        layout = inflater.inflate(R.layout.fragment_get_time, container, false);
 
         Spinner spinner = layout.findViewById(R.id.spn_months);
         Button btnShow = layout.findViewById(R.id.btn_show);
-        TextView txtHours = layout.findViewById(R.id.txt_hours);
+        txtHours = layout.findViewById(R.id.txt_hours);
 
         //UNPACK OUR DATA FROM OUR BUNDLE
         int employeeId = this.getArguments().getInt("id");
-
-//        String month = spinner.getSelectedItem().toString();
-
-
 
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +73,18 @@ public class GetTimeFragment extends Fragment {
 
         return layout;
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        View view = getView();
+
+        if(view != null) {
+            txtHours.setText(allHoursString);
+        }
+    }
+
 
     public class GetDetailAsyncClass extends AsyncTask<Integer, Void, Integer> {
 
@@ -82,18 +101,16 @@ public class GetTimeFragment extends Fragment {
         @Override
         protected Integer doInBackground(Integer... integers) {
             Integer monthInt = integers[0];
-
-            employeeDatabase = EmployeeDatabase.getInstance(getActivity());
-
-            System.out.println("Id u getTime: " + employeeId);
-            System.out.println("Month u getTimeAsync: " + monthInt);
-
-            List<Detail> employeeWithDetails = employeeDatabase.employeeDao().getEmployeesWithDetails(employeeId);
-
             int allHours=0;
             int hours=0;
 
+            employeeDatabase = EmployeeDatabase.getInstance(getActivity());
 
+            // PROVJERA
+            Log.d("GetTimeFragment id", String.valueOf(employeeId));
+            Log.d("Month in getTimeAsync", String.valueOf(monthInt));
+
+            List<Detail> employeeWithDetails = employeeDatabase.employeeDao().getEmployeesWithDetails(employeeId);
 
             for (Detail employeeWithDetail:employeeWithDetails) {
 
@@ -102,32 +119,36 @@ public class GetTimeFragment extends Fragment {
                 Date timeStart = employeeWithDetail.getTimeStart();
                 Date timeEnd = employeeWithDetail.getTimeEnd();
 
-                System.out.println("MONTH u bazi: " + date.getMonth());
-//                System.out.println("HOUR u bazi: " + timeEnd.getHours());
+                // PROVJERA
+                Log.d("Month u bazi", String.valueOf(date.getMonth()));
 
                 // parse timeStart
                 Calendar calendarStart = Calendar.getInstance();
                 calendarStart.setTime(timeStart);
-
-                System.out.println("HOUR u bazi: " + calendarStart.get(Calendar.HOUR));
 
                 // parse timeEnd
                 Calendar calendarEnd = Calendar.getInstance();
                 calendarEnd.setTime(timeEnd);
 
                 if(monthInt == date.getMonth()) {
-//                    System.out.println("Isti su!");
                     hours = (calendarEnd.get(Calendar.HOUR_OF_DAY) - calendarStart.get(Calendar.HOUR_OF_DAY));
-                    System.out.println("Hours: " + hours);
+                    Log.d("Hours", String.valueOf(hours));
                 }
+
                 allHours+=hours;
-                System.out.println("AllHours: " + allHours);
-                String allHoursString = String.valueOf(allHours);
-                txtView.setText(allHoursString);
+                Log.d("AllHours", String.valueOf(allHours));
             }
+
+            allHoursString = String.valueOf(allHours);
+            txtView.setText(allHoursString);
 
             return allHours;
         }
+    }
 
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("extra", allHoursString);
     }
 }

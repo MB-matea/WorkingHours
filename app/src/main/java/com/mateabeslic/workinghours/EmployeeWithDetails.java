@@ -6,6 +6,7 @@ import androidx.room.Relation;
 import java.util.List;
 
 public class EmployeeWithDetails {
+
     @Embedded
     public Employee employee;
 

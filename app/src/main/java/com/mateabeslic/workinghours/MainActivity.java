@@ -38,54 +38,17 @@ public class MainActivity extends AppCompatActivity {
         employeeDatabase = EmployeeDatabase.getInstance(MainActivity.this);
 
         new EmployeeListAsyncTask(this, false).execute();
-
-
-//        final Handler handler = new Handler();
-//        Executors.newSingleThreadExecutor().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                employeeDatabase = EmployeeDatabase.getInstance(MainActivity.this);
-//                employeeCursor = employeeDatabase.employeeDao().getEmployeeListCursor();
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        onGetCursor(employeeCursor);
-//                    }
-//                });
-//
-//            }
-//        });
-
     }
 
-//    public void onGetCursor(Cursor employeeCursor) {
-//        ListView listEmployees = findViewById(R.id.employees_list);
-//        listEmployees.setAdapter(new SimpleCursorAdapter(
-//                this,
-//                android.R.layout.simple_list_item_1,
-//                employeeCursor,
-//                new String[]{"name"},
-//                new int[]{android.R.id.text1},
-//                0
-//        ));
-//
-//        listEmployees.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Intent intent = new Intent(MainActivity.this, EmployeeDetailsActivity.class);
-//                    intent.putExtra(EmployeeDetailsActivity.EXTRA_EMPLOYEEID, (int) id);
-//                    startActivity(intent);
-//            }
-//        });
-//
-//    }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+
         employeeDatabase = EmployeeDatabase.getInstance(MainActivity.this);
         new EmployeeListAsyncTask(this, true).execute();
     }
+
 
     public class EmployeeListAsyncTask extends AsyncTask<Void, Void, Cursor> {
         Context context;
@@ -137,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
@@ -148,16 +112,5 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        employeeCursor.close();
-//        employeeDatabase.close();
-//    }
-
 
 }

@@ -13,12 +13,6 @@ public class Detail {
     @PrimaryKey(autoGenerate = true)
     private Integer _id;
 
-//    @ForeignKey(
-//            entity = Employee.class,
-//            parentColumns = "id_employee",
-//            childColumns = "id_fkEmployee"
-//    )
-
     private Integer id_fkEmployee;
 
     private Date date;

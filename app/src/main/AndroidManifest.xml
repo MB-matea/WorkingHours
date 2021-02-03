@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkingHours">
+
         <activity
             android:name=".EmployeeDetailsActivity"
             android:label="@string/details"

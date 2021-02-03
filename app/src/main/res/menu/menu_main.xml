@@ -6,6 +6,6 @@
         android:title="@string/add_employee"
         android:icon="@drawable/plus"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
 </menu>

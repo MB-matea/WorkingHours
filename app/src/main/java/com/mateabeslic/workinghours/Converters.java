@@ -17,14 +17,4 @@ public class Converters {
         return date == null ? null : date.getTime();
     }
 
-    @TypeConverter
-    public static Time TimefromTimestamp(Long value) {
-        return value == null ? null : new Time(value);
-    }
-
-    @TypeConverter
-    public static Long TimeToTimestamp(Time time) {
-        return time == null ? null : time.getTime();
-    }
-
 }

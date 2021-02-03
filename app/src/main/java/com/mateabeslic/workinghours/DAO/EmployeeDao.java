@@ -30,17 +30,9 @@ public interface EmployeeDao {
     @Query("SELECT * FROM employee WHERE _id = :id")
     Employee findById(Integer id);
 
-//    @Transaction
-//    @Query("SELECT * FROM employee WHERE _id = :id")
-//    public List<EmployeeWithDetails> getEmployeesWithDetails(Integer id);
-
     @Transaction
     @Query("SELECT * FROM detail WHERE id_fkEmployee = :id")
     public List<Detail> getEmployeesWithDetails(Integer id);
-
-
-//    @Query("SELECT * FROM user WHERE birthday BETWEEN :from AND :to")
-//    public List<Detail> getDetailsFromEmployee(Date from, Date to);
 
     @Insert
     void insertEmployee(Employee employee);
@@ -57,6 +49,4 @@ public interface EmployeeDao {
     @Delete
     void deleteEmployee(Employee employee);
 
-//    @Insert
-//    void insertTimes(List <Time> times);
 }

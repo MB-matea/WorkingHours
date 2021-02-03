@@ -10,43 +10,43 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/date"
-        android:layout_width="100pt"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="false"
-        android:hint="Datum"
-        android:inputType="none"
-        android:layout_marginLeft="5pt"
-        android:layout_marginVertical="5pt"/>
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="100pt"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:hint="Datum"
+            android:inputType="none"
+            android:layout_marginLeft="5pt"
+            android:layout_marginVertical="5pt"/>
 
-    <EditText
-        android:id="@+id/time_start"
-        android:layout_width="100pt"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5pt"
-        android:focusableInTouchMode="false"
-        android:hint="Vrijeme dolaska"
-        android:inputType="none" />
+        <EditText
+            android:id="@+id/time_start"
+            android:layout_width="100pt"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5pt"
+            android:focusableInTouchMode="false"
+            android:hint="Vrijeme dolaska"
+            android:inputType="none"/>
 
-    <EditText
-        android:id="@+id/time_end"
-        android:layout_width="100pt"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="false"
-        android:hint="Vrijeme odlaska"
-        android:inputType="none"
-        android:layout_marginVertical="5pt"
-        android:layout_marginLeft="5pt"/>
+        <EditText
+            android:id="@+id/time_end"
+            android:layout_width="100pt"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:hint="Vrijeme odlaska"
+            android:inputType="none"
+            android:layout_marginVertical="5pt"
+            android:layout_marginLeft="5pt"/>
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SPREMI"
-        android:layout_gravity="end"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"/>
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SPREMI"
+            android:layout_gravity="end"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="30dp"/>
 
     </LinearLayout>
 

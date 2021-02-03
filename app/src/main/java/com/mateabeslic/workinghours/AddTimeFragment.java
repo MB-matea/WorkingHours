@@ -2,12 +2,14 @@ package com.mateabeslic.workinghours;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mateabeslic.workinghours.Database.EmployeeDatabase;
 
@@ -25,11 +28,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddTimeFragment# newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class AddTimeFragment extends Fragment implements View.OnClickListener {
 
     private EmployeeDatabase employeeDatabase;
@@ -38,11 +37,13 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_add_time, container, false);
+
         EditText date = layout.findViewById(R.id.date);
         EditText timeStart = layout.findViewById(R.id.time_start);
         EditText timeEnd = layout.findViewById(R.id.time_end);
@@ -82,15 +83,30 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String employeeDate = date.getText().toString();
                 String employeeTimeStart = timeStart.getText().toString();
                 String employeeTimeEnd = timeEnd.getText().toString();
-                new InsertDetailAsyncClass(employeeId).execute(employeeDate, employeeTimeStart, employeeTimeEnd);
+
+                if(employeeDate.isEmpty()) {
+                    Toast.makeText(getContext(), "Niste unijeli datum!", Toast.LENGTH_SHORT).show();
+                }
+                else if (employeeTimeStart.isEmpty()) {
+                    Toast.makeText(getContext(), "Niste unijeli vrijeme dolaska!", Toast.LENGTH_SHORT).show();
+                }
+                else if(employeeTimeEnd.isEmpty()) {
+                    Toast.makeText(getContext(), "Niste unijeli vrijeme odlaska!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    new InsertDetailAsyncClass(employeeId).execute(employeeDate, employeeTimeStart, employeeTimeEnd);
+                    Toast.makeText(getContext(), "Usješno ste unijeli podatke!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return layout;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -103,16 +119,20 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+
     private void onClickDate(EditText date) {
         showDateDialog(date);
     }
+
 
     public void onClickTime(EditText time) {
         showTimeDialog(time);
     }
 
+
     private void showDateDialog(EditText date) {
         final Calendar calendar = Calendar.getInstance();
+
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -129,8 +149,10 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+
     private void showTimeDialog(EditText timeStart) {
         Calendar calendar = Calendar.getInstance();
+
         TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -146,6 +168,7 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
                 calendar.get(Calendar.MINUTE), true).show();
     }
 
+
     public class InsertDetailAsyncClass extends AsyncTask<String, Void, Void> {
 
         int employeeId;
@@ -160,7 +183,6 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
             String timeStart = strings[1];
             String timeEnd = strings[2];
             employeeDatabase = EmployeeDatabase.getInstance(getActivity());
-
 
             // parse date
             Calendar calendar = Calendar.getInstance();
@@ -190,21 +212,17 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
             }
 
             Date dbDate = calendar.getTime();
-
             Date dbTimeStart = calendar1.getTime();
-
             Date dbTimeEnd = calendar2.getTime();
-//
-//            employeeDatabase = EmployeeDatabase.getInstance(getActivity());
 
             Detail detail = new Detail();
 
             // set fk
             detail.setId_fkEmployee(employeeId);
 
-//            // set date
+            // set date
             detail.setDate(dbDate);
-//
+
             // set timeStart
             detail.setTimeStart(dbTimeStart);
 
@@ -213,9 +231,9 @@ public class AddTimeFragment extends Fragment implements View.OnClickListener {
 
             employeeDatabase.employeeDao().insertDetail(detail);
 
-            System.out.println(" Date: " + detail.getDate());
-            System.out.println(" Time start: " + detail.getTimeStart());
-            System.out.println(" Time end: " + detail.getTimeEnd());
+            Log.d("Date", String.valueOf(detail.getDate()));
+            Log.d("TimeStart", String.valueOf(detail.getTimeStart()));
+            Log.d("TimeEnd", String.valueOf(detail.getTimeEnd()));
 
             return null;
         }
