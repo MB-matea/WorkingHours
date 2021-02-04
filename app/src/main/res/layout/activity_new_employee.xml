@@ -15,7 +15,9 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ime i prezime"/>
+        android:hint="Ime i prezime"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"/>
 
     <Button
         android:id="@+id/btn_save"
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="SPREMI"/>
 
 </LinearLayout>
